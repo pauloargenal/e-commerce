@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Trash2Icon } from 'lucide-react';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { removeFromCart, updateQuantity, setCheckoutOpen } from '../../../store/slices/cart-slice';
@@ -68,43 +68,43 @@ export function Cart({ cartLocale }: CartProps) {
                     <p className="text-sm font-medium text-blue-600 mt-1">{itemPriceText}</p>
                   </div>
 
-                  <div className="flex items-center gap-2 mt-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleUpdateQuantity(
-                          item.product.id,
-                          item.size,
-                          item.color,
-                          item.quantity - 1
-                        )
-                      }
-                      className="w-7 h-7 rounded bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center"
-                    >
-                      {cartLocale['item.decrease']}
-                    </button>
-                    <span className="w-8 text-center font-medium">{item.quantity}</span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleUpdateQuantity(
-                          item.product.id,
-                          item.size,
-                          item.color,
-                          item.quantity + 1
-                        )
-                      }
-                      className="w-7 h-7 rounded bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center"
-                    >
-                      {cartLocale['item.increase']}
-                    </button>
-                    <button
-                      type="button"
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleUpdateQuantity(
+                            item.product.id,
+                            item.size,
+                            item.color,
+                            item.quantity - 1
+                          )
+                        }
+                        className="w-7 h-7 rounded bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center"
+                      >
+                        {cartLocale['item.decrease']}
+                      </button>
+                      <span className="w-8 text-center font-medium">{item.quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleUpdateQuantity(
+                            item.product.id,
+                            item.size,
+                            item.color,
+                            item.quantity + 1
+                          )
+                        }
+                        className="w-7 h-7 rounded bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center"
+                      >
+                        {cartLocale['item.increase']}
+                      </button>
+                    </div>
+
+                    <Trash2Icon
+                      className="w-4 h-4 text-red-60 cursor-pointer mr-2"
                       onClick={() => handleRemoveItem(item.product.id, item.size, item.color)}
-                      className="ml-auto text-red-600 hover:text-red-700 text-sm font-medium"
-                    >
-                      {cartLocale['item.remove']}
-                    </button>
+                    />
                   </div>
                 </div>
               </div>
