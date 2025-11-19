@@ -240,13 +240,14 @@ describe('Cart Component', () => {
       ]
     });
 
-    render(
+    const { container } = render(
       <Provider store={store}>
         <Cart cartLocale={mockCartLocale} />
       </Provider>
     );
 
-    expect(screen.getByText('Remove')).toBeTruthy();
+    const trashIcon = container.querySelector('.lucide-trash-2');
+    expect(trashIcon).toBeTruthy();
   });
 
   it('should remove item when remove button is clicked', () => {
@@ -261,14 +262,14 @@ describe('Cart Component', () => {
       ]
     });
 
-    render(
+    const { container } = render(
       <Provider store={store}>
         <Cart cartLocale={mockCartLocale} />
       </Provider>
     );
 
-    const removeButton = screen.getByText('Remove');
-    fireEvent.click(removeButton);
+    const trashIcon = container.querySelector('.lucide-trash-2');
+    fireEvent.click(trashIcon!);
 
     const state = store.getState();
     expect(state.cart.items.length).toBe(0);

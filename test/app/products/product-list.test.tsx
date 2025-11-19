@@ -258,7 +258,7 @@ describe('ProductList', () => {
     await waitFor(() => {
       const grids = container.querySelectorAll('.grid');
       const productsGrid = Array.from(grids).find((grid) =>
-        grid.className.includes('lg:grid-cols-3')
+        grid.className.includes('lg:grid-cols-4')
       );
       expect(productsGrid).toBeTruthy();
     });

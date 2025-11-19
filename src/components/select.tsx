@@ -56,14 +56,17 @@ export const Select = ({
     onChange?.(optionValue);
   };
 
+  const selectOptionClass = selectedOption ? 'text-gray-900' : 'text-gray-400';
+  const selectTextContent = selectedOption ? selectedOption.label : placeholder;
   return (
     <div className={`${widthStyles}`} ref={dropdownRef}>
-      {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+      {label && <span className="block text-sm font-medium text-gray-700 mb-1">{label}</span>}
       <div className="relative">
         <button
           type="button"
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
+          aria-label={label || placeholder}
           className={`
             px-4 py-2 pr-10 border rounded-lg bg-white text-left
             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -74,9 +77,7 @@ export const Select = ({
             ${className}
           `}
         >
-          <span className={selectedOption ? 'text-gray-900' : 'text-gray-400'}>
-            {selectedOption ? selectedOption.label : placeholder}
-          </span>
+          <span className={selectOptionClass}>{selectTextContent}</span>
         </button>
         <ChevronDown
           className={`
