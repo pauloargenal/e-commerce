@@ -48,7 +48,6 @@ export function Cart({ cartLocale }: CartProps) {
     <div className="space-y-4">
       <div className="space-y-3">
         {items.map((item) => {
-          const itemPrice = `$${(item.product.price * item.quantity).toFixed(2)}`;
           const itemSizeColor = `${cartLocale['item.size']}: ${item.size} | ${cartLocale['item.color']}: ${item.color}`;
           const itemPriceText = `$${item.product.price.toFixed(2)} ${cartLocale['item.each']}`;
           return (
@@ -58,12 +57,12 @@ export function Cart({ cartLocale }: CartProps) {
                   <img
                     src={item.product.image}
                     alt={item.product.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
                     <h4 className="font-semibold text-gray-900 truncate">{item.product.name}</h4>
                     <p className="text-sm text-gray-600">{itemSizeColor}</p>
                     <p className="text-sm font-medium text-blue-600 mt-1">{itemPriceText}</p>
