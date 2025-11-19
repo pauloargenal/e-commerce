@@ -321,7 +321,7 @@ fashion-style/
 │   ├── api/                      # API integration layer
 │   │   ├── product-service.ts    # Fake Store API client
 │   │   └── mock-data.ts          # Promo codes
-│   ├── app/                      # Next.js 13 app directory (routes)
+│   ├── app/                      # Next.js  app directory (routes)
 │   │   ├── layout.tsx            # Root layout
 │   │   └── products/             # Products page route
 │   │       ├── page.tsx          # Server component (loads locales)
@@ -371,7 +371,7 @@ fashion-style/
 
 ### Key Architectural Patterns
 
-- **Next.js 13 App Directory**: File-system based routing
+- **Next.js  App Directory**: File-system based routing
 - **Server/Client Component Split**: Optimized performance and SEO
 - **Feature-based Organization**: Page-specific components in route folders
 - **Shared Components**: Reusable components in `/components`
