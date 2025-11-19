@@ -1,0 +1,72 @@
+{
+  "common": {
+    "title": "Fashion Store",
+    "description": "Find your perfect style"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "description": "Your shopping cart",
+    "empty.title": "Your cart is empty",
+    "empty.description": "Add some items to get started!",
+    "item.size": "Size",
+    "item.color": "Color",
+    "item.each": "each",
+    "item.remove": "Remove",
+    "subtotal": "Subtotal:",
+    "checkout": "Proceed to Checkout",
+    "item.decrease": "-",
+    "item.increase": "+"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "orderComplete": "Order Complete",
+    "orderSummary": "Order Summary",
+    "promoCode.title": "Promo Code",
+    "promoCode.placeholder": "Enter promo code",
+    "promoCode.apply": "Apply",
+    "promoCode.applied": "Promo code \"{code}\" applied!",
+    "promoCode.saving": "You're saving {percentage}%",
+    "promoCode.invalid": "Invalid promo code",
+    "promoCode.remove": "Remove",
+    "summary.subtotal": "Subtotal:",
+    "summary.discount": "Discount ({percentage}%)",
+    "summary.total": "Total:",
+    "completePurchase": "Complete Purchase",
+    "qty": "Qty"
+  },
+  "receipt": {
+    "title": "Thank you for your purchase!",
+    "orderNumber": "Order Number:",
+    "date": "Date:",
+    "items": "Items:",
+    "continueShopping": "Continue Shopping",
+    "subtotal": "Subtotal:",
+    "discount": "Discount:",
+    "total": "Total:"
+  },
+
+  "productCard": {
+    "size": "Size",
+    "color": "Color",
+    "addToCart": "Add to Cart",
+    "added": "Added!"
+  },
+  "products": {
+    "title": "Browse Products",
+    "description": "Find your perfect product",
+    "loading": "Loading products...",
+    "error": "Error loading products",
+    "tryAgain": "Try Again",
+    "noProducts": "No products found",
+    "adjustSearch": "Try adjusting your search",
+    "input.placeholder": "Search by name, price, or category...",
+    "sort.byName": "Sort by Name",
+    "sort.byPrice": "Sort by Price",
+    "sort.byCategory": "Sort by Category",
+    "sort.ascending": "Ascending",
+    "sort.descending": "Descending"
+  },
+  "footer": {
+    "copyright": "© 2025 Fashion Store. All rights reserved."
+  }
+}
