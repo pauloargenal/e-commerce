@@ -36,7 +36,7 @@ The application integrates with the [Fake Store API](https://fakestoreapi.com/) 
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone git@github.com:pauloargenal/e-commerce.git
    cd fashion-style
    ```
 
