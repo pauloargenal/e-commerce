@@ -1,0 +1,88 @@
+{
+  "common": {
+    "title": "E-Commerce Store",
+    "description": "Find your perfect product",
+    "cart": "Cart"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "description": "Your shopping cart",
+    "empty.title": "Your cart is empty",
+    "empty.description": "Add some items to get started!",
+    "empty.continue": "Continue Shopping",
+    "item.size": "Size",
+    "item.color": "Color",
+    "item.each": "each",
+    "item.remove": "Remove",
+    "subtotal": "Subtotal:",
+    "checkout": "Proceed to Checkout",
+    "item.decrease": "-",
+    "item.increase": "+",
+    "close": "close"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "orderComplete": "Order Complete!",
+    "orderSummary": "Order Summary",
+    "promoCode.title": "Promo Code",
+    "promoCode.placeholder": "Enter promo code (try SAVE10 or SAVE20)",
+    "promoCode.apply": "Apply",
+    "promoCode.applied": "Promo code \"{code}\" applied!",
+    "promoCode.saving": "You're saving {percentage}%",
+    "promoCode.invalid": "Invalid promo code",
+    "promoCode.remove": "Remove",
+    "summary.subtotal": "Subtotal:",
+    "summary.discount": "Discount ({percentage}%)",
+    "summary.total": "Total:",
+    "completePurchase": "Complete Purchase",
+    "qty": "Qty"
+  },
+  "receipt": {
+    "title": "Thank you for your purchase!",
+    "orderNumber": "Order #",
+    "date": "Date",
+    "items": "Items Purchased",
+    "continueShopping": "Continue Shopping",
+    "subtotal": "Subtotal:",
+    "discount": "Discount:",
+    "total": "Total:"
+  },
+  "productCard": {
+    "addToCart": "Add to Cart",
+    "added": "Added!",
+    "view": "View Details",
+    "only": "Only {stock} left"
+  },
+  "products": {
+    "title": "Browse Products",
+    "description": "Find your perfect product",
+    "loading": "Loading products...",
+    "error": "Error loading products",
+    "tryAgain": "Try Again",
+    "noProducts": "No products found",
+    "adjustSearch": "Try adjusting your search or filter criteria",
+    "results": "products found",
+    "viewAll": "View All Products",
+    "input.placeholder": "Search products...",
+    "search.label": "Search:",
+    "filter.category": "Category",
+    "filter.allCategories": "All Categories",
+    "filter.clear": "Clear",
+    "sort.byName": "Name",
+    "sort.byPrice": "Price",
+    "sort.byRating": "Rating",
+    "sort.byStock": "Stock",
+    "sort.ascending": "Ascending",
+    "sort.descending": "Descending"
+  },
+  "productDetail": {
+    "description": "Description",
+    "reviews": "Customer Reviews",
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added to Cart!",
+    "backToProducts": "Back to Products"
+  },
+  "footer": {
+    "copyright": "© 2025 E-Commerce Store. All rights reserved."
+  }
+}

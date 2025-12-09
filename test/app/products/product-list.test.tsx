@@ -1,0 +1,128 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+
+import { ProductListServer } from '../../../src/app/products/components/product-list';
+import cartReducer from '../../../src/store/slices/cart-slice';
+import productsReducer from '../../../src/store/slices/products-slice';
+import { mockProducts } from '../../mocks';
+import { CategoryResponse } from '../../../src/api/product-service';
+
+// Mock next/navigation
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn()
+  }),
+  useSearchParams: () => ({
+    toString: () => '',
+    get: () => null
+  })
+}));
+
+const createMockStore = () => {
+  return configureStore({
+    reducer: {
+      cart: cartReducer,
+      products: productsReducer
+    }
+  });
+};
+
+const mockCategories: CategoryResponse[] = [
+  {
+    slug: 'smartphones',
+    name: 'Smartphones',
+    url: 'https://dummyjson.com/products/category/smartphones'
+  },
+  { slug: 'laptops', name: 'Laptops', url: 'https://dummyjson.com/products/category/laptops' }
+];
+
+const mockLocale = {
+  title: 'Browse Products',
+  loading: 'Loading...',
+  noProducts: 'No products found',
+  adjustSearch: 'Try adjusting your search',
+  'input.placeholder': 'Search products...',
+  'filter.allCategories': 'All Categories',
+  'sort.byName': 'Name',
+  'sort.byPrice': 'Price',
+  'sort.byRating': 'Rating',
+  'sort.byStock': 'Stock',
+  'sort.ascending': 'Ascending',
+  'sort.descending': 'Descending',
+  results: 'products found'
+};
+
+const mockFilters = {
+  search: '',
+  category: 'all',
+  sortBy: 'title' as const,
+  sortOrder: 'asc' as const
+};
+
+const renderWithProvider = (component: React.ReactNode) => {
+  const store = createMockStore();
+  return render(<Provider store={store}>{component}</Provider>);
+};
+
+describe('ProductListServer', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should render products', () => {
+    renderWithProvider(
+      <ProductListServer
+        initialProducts={mockProducts}
+        categories={mockCategories}
+        productsLocale={mockLocale}
+        currentFilters={mockFilters}
+      />
+    );
+
+    mockProducts.forEach((product) => {
+      expect(screen.getByText(product.title)).toBeInTheDocument();
+    });
+  });
+
+  it('should display product count', () => {
+    renderWithProvider(
+      <ProductListServer
+        initialProducts={mockProducts}
+        categories={mockCategories}
+        productsLocale={mockLocale}
+        currentFilters={mockFilters}
+      />
+    );
+
+    expect(screen.getByText(String(mockProducts.length))).toBeInTheDocument();
+  });
+
+  it('should show no products message when empty', () => {
+    renderWithProvider(
+      <ProductListServer
+        initialProducts={[]}
+        categories={mockCategories}
+        productsLocale={mockLocale}
+        currentFilters={mockFilters}
+      />
+    );
+
+    expect(screen.getByText(mockLocale.noProducts)).toBeInTheDocument();
+  });
+
+  it('should render search input', () => {
+    renderWithProvider(
+      <ProductListServer
+        initialProducts={mockProducts}
+        categories={mockCategories}
+        productsLocale={mockLocale}
+        currentFilters={mockFilters}
+      />
+    );
+
+    expect(screen.getByPlaceholderText(mockLocale['input.placeholder'])).toBeInTheDocument();
+  });
+});
