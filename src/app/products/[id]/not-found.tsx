@@ -3,9 +3,6 @@ import { PackageX, ArrowLeft } from 'lucide-react';
 
 import { getLocale } from '../../../utils/get-locales';
 
-interface ProductNotFoundProps {
-  locales: Record<string, string>;
-}
 export default async function ProductNotFound() {
   const { products } = await getLocale();
   return (

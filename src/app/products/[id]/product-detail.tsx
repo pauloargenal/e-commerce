@@ -25,7 +25,7 @@ import { Button } from '../../../components/button';
 
 interface ProductDetailProps {
   product: Product;
-  locales: Record<string, any>;
+  locales: Record<string, string>;
 }
 
 export function ProductDetail({ product, locales }: ProductDetailProps) {
@@ -42,6 +42,12 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
   const hasDiscount = product.discountPercentage > 0;
   const savings = product.price - discountedPrice;
 
+  const discountedPriceText = `$${discountedPrice.toFixed(2)}`;
+  const productReviewsText = `${product.reviews?.length || 0} reviews`;
+  const discountBadgeText = `${Math.round(product.discountPercentage)}%`;
+  const regularPriceText = `$${product.price.toFixed(2)}`;
+  const savingsText = `Save ${savings.toFixed(2)}`;
+
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
       dispatch(addToCart({ product }));
@@ -55,23 +61,6 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
     setQuantity(newQuantity);
   };
 
-  const renderStars = (rating: number) => {
-    return (
-      <div className="flex items-center gap-1">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            className={`w-5 h-5 ${
-              star <= Math.round(rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-300'
-            }`}
-          />
-        ))}
-        <span className="ml-2 text-slate-600 font-medium">{rating.toFixed(1)}</span>
-        <span className="text-slate-400">({product.reviews?.length || 0} reviews)</span>
-      </div>
-    );
-  };
-
   const nextImage = () => {
     setSelectedImageIndex((prev) => (prev === product.images.length - 1 ? 0 : prev + 1));
   };
@@ -79,6 +68,18 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
   const prevImage = () => {
     setSelectedImageIndex((prev) => (prev === 0 ? product.images.length - 1 : prev - 1));
   };
+
+  const addToCartContent = addedToCart ? (
+    <>
+      <Check className="w-5 h-5" />
+      {locales.addedToCart}
+    </>
+  ) : (
+    <>
+      <ShoppingCart className="w-5 h-5" />
+      {locales.addToCart}
+    </>
+  );
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -96,12 +97,16 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
           {product.images.length > 1 && (
             <>
               <button
+                type="button"
+                aria-label={locales['product.previousImage']}
                 onClick={prevImage}
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-colors"
               >
                 <ChevronLeft className="w-5 h-5 text-slate-700" />
               </button>
               <button
+                type="button"
+                aria-label={locales['product.nextImage']}
                 onClick={nextImage}
                 className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-colors"
               >
@@ -113,7 +118,7 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
           {/* Discount Badge */}
           {hasDiscount && (
             <div className="absolute top-6 left-6 px-4 py-2 bg-gradient-to-r from-rose-500 to-pink-500 text-white text-sm font-bold rounded-full shadow-lg">
-              Save {Math.round(product.discountPercentage)}%
+              {discountBadgeText}
             </div>
           )}
         </div>
@@ -123,7 +128,9 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
           <div className="flex gap-3 overflow-x-auto pb-2">
             {product.images.map((image, index) => (
               <button
-                key={index}
+                key={image}
+                type="button"
+                aria-label={locales['product.selectImage']}
                 onClick={() => setSelectedImageIndex(index)}
                 className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
                   selectedImageIndex === index
@@ -133,7 +140,7 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
               >
                 <img
                   src={image}
-                  alt={`${product.title} ${index + 1}`}
+                  alt={locales['product.imageAlt']}
                   className="w-full h-full object-cover"
                 />
               </button>
@@ -163,21 +170,30 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
         </h1>
 
         {/* Rating */}
-        {renderStars(product.rating)}
+        <div className="flex items-center gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <Star
+              key={star}
+              className={`w-5 h-5 ${
+                star <= Math.round(product.rating)
+                  ? 'text-amber-400 fill-amber-400'
+                  : 'text-slate-300'
+              }`}
+            />
+          ))}
+          <span className="ml-2 text-slate-600 font-medium">{product.rating.toFixed(1)}</span>
+          <span className="text-slate-400">{productReviewsText}</span>
+        </div>
 
         {/* Price */}
         <div className="py-6 border-y border-slate-100">
           <div className="flex items-baseline gap-3 mb-2">
-            <span className="text-4xl font-bold text-indigo-600">
-              ${discountedPrice.toFixed(2)}
-            </span>
+            <span className="text-4xl font-bold text-indigo-600">{discountedPriceText}</span>
             {hasDiscount && (
               <>
-                <span className="text-xl text-slate-400 line-through">
-                  ${product.price.toFixed(2)}
-                </span>
+                <span className="text-xl text-slate-400 line-through">{regularPriceText}</span>
                 <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-sm font-medium rounded">
-                  Save ${savings.toFixed(2)}
+                  {savingsText}
                 </span>
               </>
             )}
@@ -185,22 +201,25 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
         </div>
 
         {/* Description */}
-        <div>
-          <h3 className="text-lg font-semibold text-slate-900 mb-2">Description</h3>
+        <>
+          <h3 className="text-lg font-semibold text-slate-900 mb-2">{locales.description}</h3>
           <p className="text-slate-600 leading-relaxed">{product.description}</p>
-        </div>
+        </>
 
         {/* Tags */}
         {product.tags && product.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {product.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full"
-              >
-                #{tag}
-              </span>
-            ))}
+            {product.tags.map((tag) => {
+              const productTagText = `#${tag}`;
+              return (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full"
+                >
+                  {productTagText}
+                </span>
+              );
+            })}
           </div>
         )}
 
@@ -217,7 +236,9 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
             </span>
           </div>
           {product.stock > 0 && product.stock < 20 && (
-            <span className="text-amber-600 text-sm">Only {product.stock} left in stock</span>
+            <span className="text-amber-600 text-sm">
+              {locales['product.only']} {product.stock} {locales['product.leftInStock']}
+            </span>
           )}
         </div>
 
@@ -226,6 +247,8 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
           {/* Quantity Selector */}
           <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden">
             <button
+              type="button"
+              aria-label={locales['product.decreaseQuantity']}
               onClick={() => handleQuantityChange(-1)}
               disabled={quantity <= 1}
               className="w-12 h-12 flex items-center justify-center hover:bg-slate-100 transition-colors disabled:opacity-50"
@@ -234,6 +257,8 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
             </button>
             <span className="w-16 text-center font-semibold text-lg">{quantity}</span>
             <button
+              type="button"
+              aria-label={locales['product.increaseQuantity']}
               onClick={() => handleQuantityChange(1)}
               disabled={quantity >= product.stock}
               className="w-12 h-12 flex items-center justify-center hover:bg-slate-100 transition-colors disabled:opacity-50"
@@ -253,21 +278,13 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
             }`}
             variant="primary"
           >
-            {addedToCart ? (
-              <>
-                <Check className="w-5 h-5" />
-                Added to Cart!
-              </>
-            ) : (
-              <>
-                <ShoppingCart className="w-5 h-5" />
-                Add to Cart
-              </>
-            )}
+            {addToCartContent}
           </Button>
 
           {/* Wishlist Button */}
           <button
+            type="button"
+            aria-label={locales.wishlist}
             onClick={() => setIsLiked(!isLiked)}
             className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-all ${
               isLiked
@@ -282,7 +299,7 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
         {/* Cart Status */}
         {itemInCart && (
           <p className="text-sm text-slate-500">
-            You have {itemInCart.quantity} of this item in your cart
+            {locales['you.have']} {itemInCart.quantity} {locales['cart.item.quantity']}
           </p>
         )}
 
@@ -290,22 +307,22 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
           <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
             <Truck className="w-6 h-6 text-indigo-600 flex-shrink-0" />
-            <div>
-              <p className="font-medium text-slate-900 text-sm">Free Shipping</p>
+            <div className="flex flex-col gap-0.5">
+              <p className="font-medium text-slate-900 text-sm">{locales['free.shipping']}</p>
               <p className="text-xs text-slate-500">{product.shippingInformation}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
             <Shield className="w-6 h-6 text-indigo-600 flex-shrink-0" />
-            <div>
-              <p className="font-medium text-slate-900 text-sm">Warranty</p>
+            <div className="flex flex-col gap-0.5">
+              <p className="font-medium text-slate-900 text-sm">{locales.warranty}</p>
               <p className="text-xs text-slate-500">{product.warrantyInformation}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
             <RotateCcw className="w-6 h-6 text-indigo-600 flex-shrink-0" />
-            <div>
-              <p className="font-medium text-slate-900 text-sm">Returns</p>
+            <div className="flex flex-col gap-0.5">
+              <p className="font-medium text-slate-900 text-sm">{locales.returns}</p>
               <p className="text-xs text-slate-500">{product.returnPolicy}</p>
             </div>
           </div>
@@ -314,16 +331,17 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
         {/* Reviews */}
         {product.reviews && product.reviews.length > 0 && (
           <div className="pt-8 border-t border-slate-100">
-            <h3 className="text-xl font-bold text-slate-900 mb-6">Customer Reviews</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-6">{locales['customer.reviews']}</h3>
             <div className="space-y-4">
               {product.reviews.slice(0, 3).map((review, index) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <div key={index} className="bg-slate-50 rounded-xl p-5">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
                         {review.reviewerName.charAt(0)}
                       </div>
-                      <div>
+                      <>
                         <p className="font-medium text-slate-900">{review.reviewerName}</p>
                         <div className="flex items-center gap-1">
                           {[1, 2, 3, 4, 5].map((star) => (
@@ -337,7 +355,7 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
                             />
                           ))}
                         </div>
-                      </div>
+                      </>
                     </div>
                     <span className="text-sm text-slate-400">
                       {new Date(review.date).toLocaleDateString()}
