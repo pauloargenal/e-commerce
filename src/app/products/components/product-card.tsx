@@ -7,6 +7,7 @@ import { Star, ShoppingCart, Eye, Heart } from 'lucide-react';
 import { Product } from '../../../types/product';
 import { useAppDispatch } from '../../../store/hooks';
 import { addToCart } from '../../../store/slices/cart-slice';
+import { Button } from '../../../components';
 
 interface ProductCardProps {
   product: Product;
@@ -54,7 +55,7 @@ export function ProductCard({ product, index = 0, productCardLocale }: ProductCa
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div
-        className="relative bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-indigo-100/50 hover:-translate-y-1 hover:border-indigo-100"
+        className="relative bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-indigo-100/50 hover:-translate-y-1 hover:border-indigo-100 h-full flex flex-col"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -102,7 +103,7 @@ export function ProductCard({ product, index = 0, productCardLocale }: ProductCa
             <button
               type="button"
               onClick={handleLike}
-              className={`p-2.5 rounded-xl transition-all duration-200 ${
+              className={`p-2.5 rounded-xl transition-all duration-200 flex items-center gap-2 ${
                 isLiked
                   ? 'bg-rose-500 text-white'
                   : 'bg-white text-slate-900 hover:bg-rose-500 hover:text-white'
@@ -115,7 +116,7 @@ export function ProductCard({ product, index = 0, productCardLocale }: ProductCa
         </div>
 
         {/* Content */}
-        <div className="p-5">
+        <div className="p-5 flex flex-col flex-1">
           {/* Category */}
           <div className="mb-2">
             <span className="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-600 text-xs font-medium rounded-full capitalize">
@@ -124,12 +125,12 @@ export function ProductCard({ product, index = 0, productCardLocale }: ProductCa
           </div>
 
           {/* Title */}
-          <h3 className="font-semibold text-slate-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+          <h3 className="font-semibold text-slate-900 mb-2 truncate group-hover:text-indigo-600 transition-colors">
             {product.title}
           </h3>
 
           {/* Brand */}
-          {product.brand && <p className="text-xs text-slate-500 mb-2">{product.brand}</p>}
+          <p className="text-xs text-slate-500 mb-2 h-4">{product.brand || '\u00A0'}</p>
 
           {/* Rating */}
           <div className="mb-3">
@@ -149,7 +150,7 @@ export function ProductCard({ product, index = 0, productCardLocale }: ProductCa
           </div>
 
           {/* Price */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-baseline gap-2">
               <span className="text-xl font-bold text-indigo-600">{priceText}</span>
               {hasDiscount && (
@@ -158,8 +159,7 @@ export function ProductCard({ product, index = 0, productCardLocale }: ProductCa
             </div>
           </div>
 
-          {/* Quick View Link */}
-          <div className="mt-3 pt-3 border-t border-slate-100">
+          <div className="mt-auto pt-3 border-t border-slate-100">
             <span className="inline-flex items-center gap-1.5 text-sm text-slate-500 group-hover:text-indigo-600 transition-colors">
               <Eye className="w-4 h-4" />
               {viewDetailsText}

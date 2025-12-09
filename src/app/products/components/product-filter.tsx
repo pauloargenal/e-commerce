@@ -114,10 +114,9 @@ export default function ProductFilter({
             <Button
               type="button"
               onClick={clearFilters}
-              variant="outline"
-              className="px-4 rounded-xl text-red-500 border-red-200 hover:bg-red-50"
+              variant="danger"
+              className="px-4 rounded-xl text-white hover:bg-red-700"
             >
-              <X className="w-4 h-4 mr-1" />
               {productsLocale['filter.clear']}
             </Button>
           )}
