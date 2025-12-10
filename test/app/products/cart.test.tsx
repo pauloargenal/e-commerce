@@ -20,8 +20,13 @@ const mockCartLocale = {
   title: 'Shopping Cart',
   'empty.title': 'Your cart is empty',
   'empty.description': 'Add some items to get started!',
+  'empty.continue': 'Continue Shopping',
   subtotal: 'Subtotal:',
-  checkout: 'Proceed to Checkout'
+  checkout: 'Proceed to Checkout',
+  close: 'Close cart',
+  'item.decrease': 'Decrease quantity',
+  'item.increase': 'Increase quantity',
+  'item.remove': 'Remove item'
 };
 
 const renderWithProvider = (component: React.ReactNode, store = createMockStore()) => {
@@ -75,10 +80,11 @@ describe('CartSidebar', () => {
   it('should not be visible when isOpen is false', () => {
     renderWithProvider(<CartSidebar cartLocale={mockCartLocale} isOpen={false} />);
 
-    // The sidebar should have translate-x-full class when closed
     const sidebar = screen
-      .getByRole('heading', { name: mockCartLocale.title })
-      .closest('div[class*="fixed"]');
-    expect(sidebar).toHaveClass('translate-x-full');
+      .getByRole('dialog', { name: mockCartLocale.title })
+      .closest('aside[class*="fixed"]');
+
+    expect(sidebar).toBeTruthy();
+    expect(sidebar?.className).toContain('translate-x-full');
   });
 });
