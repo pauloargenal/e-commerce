@@ -1,94 +1,93 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useState, useTransition } from 'react';
-import { Search, Loader2 } from 'lucide-react';
+import { useCallback, useState, useMemo } from 'react';
+import { Search } from 'lucide-react';
 
 import { Product, ProductFilters, SortOption, SortOrder } from '../../../types/product';
 import { Button } from '../../../components/button';
 import { CategoryResponse } from '../../../api/get-product-category-service';
+import { sortProducts } from '../utils/sort-products';
 
 import { ProductCard } from './product-card';
 import ProductFilter from './product-filter';
 
 interface ProductListProps {
-  initialProducts: Product[];
+  allProducts: Product[];
   categories: CategoryResponse[];
   productsLocale: Record<string, string>;
-  currentFilters: ProductFilters;
   productCardLocale: Record<string, string>;
 }
 
 export function ProductList({
-  initialProducts,
+  allProducts,
   categories,
   productsLocale,
-  currentFilters,
   productCardLocale
 }: ProductListProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
-
-  const [searchValue, setSearchValue] = useState(currentFilters.search);
+  const [searchValue, setSearchValue] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [currentFilters, setCurrentFilters] = useState<ProductFilters>({
+    search: '',
+    category: 'all',
+    sortBy: 'title',
+    sortOrder: 'asc'
+  });
 
   const handleShowFilters = useCallback(() => {
     setShowFilters(!showFilters);
   }, [showFilters]);
 
-  const updateFilters = useCallback(
-    (updates: Partial<ProductFilters>) => {
-      const params = new URLSearchParams(searchParams.toString());
-
-      Object.entries(updates).forEach(([key, value]) => {
-        if (value && value !== 'all' && value !== '') {
-          params.set(key, value);
-        } else {
-          params.delete(key);
-        }
-      });
-
-      startTransition(() => {
-        router.push(`/products?${params.toString()}`);
-      });
-    },
-    [router, searchParams]
-  );
-
   const handleSearch = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
-      updateFilters({ search: searchValue });
+      setCurrentFilters((prev) => ({ ...prev, search: searchValue }));
     },
-    [searchValue, updateFilters]
+    [searchValue]
   );
 
-  const handleCategoryChange = useCallback(
-    (value: string) => {
-      updateFilters({ category: value });
-    },
-    [updateFilters]
-  );
+  const handleCategoryChange = useCallback((value: string) => {
+    setCurrentFilters((prev) => ({ ...prev, category: value }));
+  }, []);
 
-  const handleSortByChange = useCallback(
-    (value: string) => {
-      updateFilters({ sortBy: value as SortOption });
-    },
-    [updateFilters]
-  );
+  const handleSortByChange = useCallback((value: string) => {
+    setCurrentFilters((prev) => ({ ...prev, sortBy: value as SortOption }));
+  }, []);
 
   const handleSortOrderToggle = useCallback(() => {
-    const newOrder: SortOrder = currentFilters.sortOrder === 'asc' ? 'desc' : 'asc';
-    updateFilters({ sortOrder: newOrder });
-  }, [currentFilters.sortOrder, updateFilters]);
+    setCurrentFilters((prev) => ({
+      ...prev,
+      sortOrder: prev.sortOrder === 'asc' ? 'desc' : 'asc'
+    }));
+  }, []);
 
   const clearFilters = useCallback(() => {
     setSearchValue('');
-    startTransition(() => {
-      router.push('/products');
+    setCurrentFilters({
+      search: '',
+      category: 'all',
+      sortBy: 'title',
+      sortOrder: 'asc'
     });
-  }, [router]);
+  }, []);
+
+  const filteredProducts = useMemo(() => {
+    let filtered = [...allProducts];
+    if (currentFilters.search.trim()) {
+      const searchTerm = currentFilters.search.toLowerCase();
+      filtered = filtered.filter(
+        (product) =>
+          product.title.toLowerCase().includes(searchTerm) ||
+          product.description.toLowerCase().includes(searchTerm) ||
+          product.category.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    if (currentFilters.category && currentFilters.category !== 'all') {
+      filtered = filtered.filter((product) => product.category === currentFilters.category);
+    }
+
+    return sortProducts(filtered, currentFilters.sortBy, currentFilters.sortOrder);
+  }, [allProducts, currentFilters]);
 
   const hasActiveFilters =
     currentFilters.search || (currentFilters.category && currentFilters.category !== 'all');
@@ -132,24 +131,15 @@ export function ProductList({
         categoryDisplayName={categoryDisplayName}
       />
 
-      {isPending && (
-        <div className="fixed inset-0 bg-white/50 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-white rounded-2xl shadow-xl p-6 flex items-center gap-3">
-            <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
-            <span className="text-slate-600 font-medium">{productsLocale.loading}</span>
-          </div>
-        </div>
-      )}
-
       {/* Results Count */}
       <div className="flex items-center justify-between">
         <p className="text-slate-600">
-          <span className="font-semibold text-slate-900">{initialProducts.length}</span>{' '}
+          <span className="font-semibold text-slate-900">{filteredProducts.length}</span>{' '}
           {productsLocale.results}
         </p>
       </div>
 
-      {initialProducts.length === 0 && (
+      {filteredProducts.length === 0 && (
         <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-100">
           <div className="w-20 h-20 mx-auto mb-6 bg-slate-100 rounded-full flex items-center justify-center">
             <Search className="w-10 h-10 text-slate-400" />
@@ -167,7 +157,7 @@ export function ProductList({
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {initialProducts.map((product, index) => (
+        {filteredProducts.map((product, index) => (
           <ProductCard
             key={product.id}
             product={product}

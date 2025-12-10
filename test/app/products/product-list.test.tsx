@@ -84,11 +84,10 @@ describe('ProductListServer', () => {
   it('should render products', () => {
     renderWithProvider(
       <ProductList
-        initialProducts={mockProducts}
+        allProducts={mockProducts}
         categories={mockCategories}
         productsLocale={mockLocale}
         productCardLocale={mockProductCardLocale}
-        currentFilters={mockFilters}
       />
     );
 
@@ -100,11 +99,10 @@ describe('ProductListServer', () => {
   it('should display product count', () => {
     renderWithProvider(
       <ProductList
-        initialProducts={mockProducts}
+        allProducts={mockProducts}
         categories={mockCategories}
         productsLocale={mockLocale}
         productCardLocale={mockProductCardLocale}
-        currentFilters={mockFilters}
       />
     );
 
@@ -114,11 +112,10 @@ describe('ProductListServer', () => {
   it('should show no products message when empty', () => {
     renderWithProvider(
       <ProductList
-        initialProducts={[]}
+        allProducts={[]}
         categories={mockCategories}
         productsLocale={mockLocale}
         productCardLocale={mockProductCardLocale}
-        currentFilters={mockFilters}
       />
     );
 
@@ -128,11 +125,10 @@ describe('ProductListServer', () => {
   it('should render search input', () => {
     renderWithProvider(
       <ProductList
-        initialProducts={mockProducts}
+        allProducts={mockProducts}
         categories={mockCategories}
         productsLocale={mockLocale}
         productCardLocale={mockProductCardLocale}
-        currentFilters={mockFilters}
       />
     );
 
