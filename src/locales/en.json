@@ -99,7 +99,8 @@
     "warranty": "Warranty",
     "returns": "Returns",
     "you.have": "You have",
-    "cart.item.quantity": "of this item in your cart"
+    "cart.item.quantity": "of this item in your cart",
+    "product.outOfStock": "Already added max quantity of this product"
   },
   "footer": {
     "copyright": "© 2025 E-Commerce Store. All rights reserved."

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   Star,
@@ -22,6 +22,7 @@ import { Product } from '../../../types/product';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { addToCart } from '../../../store/slices/cart-slice';
 import { Button } from '../../../components/button';
+import Snackbar from '../../../components/snack-bar';
 
 interface ProductDetailProps {
   product: Product;
@@ -34,6 +35,7 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [error, setError] = useState('');
 
   const cartItems = useAppSelector((state) => state.cart.items);
   const itemInCart = cartItems.find((item) => item.product.id === product.id);
@@ -49,6 +51,12 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
   const savingsText = `Save ${savings.toFixed(2)}`;
 
   const handleAddToCart = () => {
+    if (
+      cartItems.find((item) => item.product.id === product.id && item.quantity >= product.stock)
+    ) {
+      setError(locales['product.outOfStock']);
+      return;
+    }
     for (let i = 0; i < quantity; i++) {
       dispatch(addToCart({ product }));
     }
@@ -80,6 +88,12 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
       {locales.addToCart}
     </>
   );
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => setError(''), 2000);
+    }
+  }, [error]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -369,6 +383,7 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
           </div>
         )}
       </div>
+      {error && <Snackbar message={error} type="error" />}
     </div>
   );
 }
