@@ -68,13 +68,19 @@ cd e-commerce
 npm install
 ```
 
-3. Run the development server:
+3. Update env variables:
+
+```bash
+npm run setup:env
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ### Available Scripts
 

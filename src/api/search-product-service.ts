@@ -7,15 +7,14 @@ export interface GetProductsResponse {
   limit: number;
 }
 
-const API_BASE_URL = 'https://dummyjson.com';
-
 class SearchProductService {
   private get getApiString(): string {
-    if (!API_BASE_URL) {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!apiBaseUrl) {
       throw new Error('One or more API env vars are not defined');
     }
 
-    return `${API_BASE_URL}/products/search`;
+    return `${apiBaseUrl}/products/search`;
   }
 
   private get headers(): HeadersInit {
