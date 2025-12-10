@@ -58,7 +58,7 @@ A modern e-commerce web application focused on building a high-quality Product L
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:pauloargenal/e-commerce.git
 cd e-commerce
 ```
 
