@@ -269,6 +269,7 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
 
           {/* Add to Cart Button */}
           <Button
+            ariaLabel={locales['product.addToCart']}
             onClick={handleAddToCart}
             disabled={product.stock === 0 || addedToCart}
             className={`flex-1 h-12 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all ${

@@ -19,16 +19,19 @@ export function ReceiptView({ receipt, handleClearCart, receiptLocale }: Receipt
   const subtotalLabel = receiptLocale.subtotal;
   const discountLabel = receiptLocale.discount;
   const totalLabel = receiptLocale.total;
-
+  const discountAmountText = `-$${receipt.discount.toFixed(2)}`;
+  const subtotalText = `$${receipt.subtotal.toFixed(2)}`;
+  const totalText = `$${receipt.total.toFixed(2)}`;
   const renderOrderItem = (item: (typeof receipt.items)[0]) => {
     const discountedPrice = item.product.price * (1 - item.product.discountPercentage / 100);
     const itemTotal = discountedPrice * item.quantity;
     const itemDescription = `${item.product.title} x${item.quantity}`;
+    const itemTotalText = `$${itemTotal.toFixed(2)}`;
 
     return (
       <div key={item.product.id} className="flex justify-between text-sm py-2">
         <span className="text-slate-700">{itemDescription}</span>
-        <span className="font-medium text-slate-900">${itemTotal.toFixed(2)}</span>
+        <span className="font-medium text-slate-900">{itemTotalText}</span>
       </div>
     );
   };
@@ -38,7 +41,7 @@ export function ReceiptView({ receipt, handleClearCart, receiptLocale }: Receipt
     return (
       <div className="flex justify-between text-sm text-emerald-600">
         <span>{discountLabel}</span>
-        <span className="font-medium">-${receipt.discount.toFixed(2)}</span>
+        <span className="font-medium">{discountAmountText}</span>
       </div>
     );
   };
@@ -52,39 +55,39 @@ export function ReceiptView({ receipt, handleClearCart, receiptLocale }: Receipt
 
       {/* Success Message */}
       <h3 className="text-2xl font-bold text-slate-900 mb-2">{receiptLocale.title}</h3>
-      <p className="text-slate-500 mb-8">Your order has been placed successfully.</p>
+      <p className="text-slate-500 mb-8">{receiptLocale.success}</p>
 
       {/* Receipt Card */}
       <Card className="bg-white border border-slate-200 text-left mb-6 shadow-sm">
         <div className="space-y-4">
           {/* Order Info */}
           <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-            <div>
+            <>
               <p className="text-xs text-slate-500 uppercase tracking-wide">{orderNumberLabel}</p>
               <p className="font-mono font-bold text-indigo-600 text-lg">{receipt.id}</p>
-            </div>
-            <div className="text-right">
+            </>
+            <>
               <p className="text-xs text-slate-500 uppercase tracking-wide">{dateLabel}</p>
               <p className="font-medium text-slate-900">{formatDate(receipt.timestamp)}</p>
-            </div>
+            </>
           </div>
 
           {/* Items */}
-          <div>
+          <>
             <p className="text-sm font-semibold text-slate-900 mb-2">{itemsLabel}</p>
             <div className="bg-slate-50 rounded-lg p-3">{receipt.items.map(renderOrderItem)}</div>
-          </div>
+          </>
 
           {/* Totals */}
           <div className="pt-4 border-t border-slate-100 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-slate-600">{subtotalLabel}</span>
-              <span className="font-medium text-slate-900">${receipt.subtotal.toFixed(2)}</span>
+              <span className="font-medium text-slate-900">{subtotalText}</span>
             </div>
             {renderDiscountRow()}
             <div className="flex justify-between font-bold text-lg pt-3 border-t border-slate-200">
               <span className="text-slate-900">{totalLabel}</span>
-              <span className="text-indigo-600">${receipt.total.toFixed(2)}</span>
+              <span className="text-indigo-600">{totalText}</span>
             </div>
           </div>
 
@@ -92,7 +95,7 @@ export function ReceiptView({ receipt, handleClearCart, receiptLocale }: Receipt
           {receipt.promoCode && (
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-center">
               <p className="text-sm text-emerald-700">
-                Promo code <span className="font-bold">{receipt.promoCode}</span> applied
+                {receiptLocale['promoCode.applied'].replace('{code}', receipt.promoCode || '')}
               </p>
             </div>
           )}

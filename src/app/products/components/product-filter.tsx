@@ -123,7 +123,7 @@ export default function ProductFilter({
         </div>
       </form>
       {showCategoryBadge && (
-        <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+        <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mt-1">
           {categoryDisplayName}
         </span>
       )}

@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { ProductListServer } from '../../../src/app/products/components/product-list';
+import { ProductList } from '../../../src/app/products/components/product-list';
 import cartReducer from '../../../src/store/slices/cart-slice';
 import productsReducer from '../../../src/store/slices/products-slice';
 import { mockProducts } from '../../mocks';
-import { CategoryResponse } from '../../../src/api/product-service';
+import { CategoryResponse } from '../../../src/api/get-product-category-service';
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
@@ -46,13 +46,22 @@ const mockLocale = {
   adjustSearch: 'Try adjusting your search',
   'input.placeholder': 'Search products...',
   'filter.allCategories': 'All Categories',
+  'filter.category': 'Category',
+  'search.label': 'Search:',
   'sort.byName': 'Name',
   'sort.byPrice': 'Price',
   'sort.byRating': 'Rating',
   'sort.byStock': 'Stock',
   'sort.ascending': 'Ascending',
   'sort.descending': 'Descending',
-  results: 'products found'
+  results: 'products found',
+  viewAll: 'View All Products'
+};
+
+const mockProductCardLocale = {
+  addToCart: 'Add to Cart',
+  added: 'Added!',
+  view: 'View Details'
 };
 
 const mockFilters = {
@@ -74,10 +83,11 @@ describe('ProductListServer', () => {
 
   it('should render products', () => {
     renderWithProvider(
-      <ProductListServer
+      <ProductList
         initialProducts={mockProducts}
         categories={mockCategories}
         productsLocale={mockLocale}
+        productCardLocale={mockProductCardLocale}
         currentFilters={mockFilters}
       />
     );
@@ -89,10 +99,11 @@ describe('ProductListServer', () => {
 
   it('should display product count', () => {
     renderWithProvider(
-      <ProductListServer
+      <ProductList
         initialProducts={mockProducts}
         categories={mockCategories}
         productsLocale={mockLocale}
+        productCardLocale={mockProductCardLocale}
         currentFilters={mockFilters}
       />
     );
@@ -102,10 +113,11 @@ describe('ProductListServer', () => {
 
   it('should show no products message when empty', () => {
     renderWithProvider(
-      <ProductListServer
+      <ProductList
         initialProducts={[]}
         categories={mockCategories}
         productsLocale={mockLocale}
+        productCardLocale={mockProductCardLocale}
         currentFilters={mockFilters}
       />
     );
@@ -115,10 +127,11 @@ describe('ProductListServer', () => {
 
   it('should render search input', () => {
     renderWithProvider(
-      <ProductListServer
+      <ProductList
         initialProducts={mockProducts}
         categories={mockCategories}
         productsLocale={mockLocale}
+        productCardLocale={mockProductCardLocale}
         currentFilters={mockFilters}
       />
     );

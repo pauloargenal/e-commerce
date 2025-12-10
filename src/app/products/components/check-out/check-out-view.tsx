@@ -79,7 +79,7 @@ export function CheckOutView({
     const discountedPrice = item.product.price * (1 - item.product.discountPercentage / 100);
     const itemTotal = discountedPrice * item.quantity;
     const quantityText = `${checkoutLocale.qty}: ${item.quantity}`;
-
+    const itemTotalText = `$${itemTotal.toFixed(2)}`;
     return (
       <div
         key={item.product.id}
@@ -96,7 +96,7 @@ export function CheckOutView({
           <p className="font-medium text-slate-900 text-sm line-clamp-1">{item.product.title}</p>
           <p className="text-slate-500 text-xs mt-0.5">{quantityText}</p>
         </div>
-        <span className="font-semibold text-slate-900">${itemTotal.toFixed(2)}</span>
+        <span className="font-semibold text-slate-900">{itemTotalText}</span>
       </div>
     );
   };

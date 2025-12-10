@@ -21,13 +21,14 @@ describe('Button component', () => {
   it('should apply primary variant styles by default', () => {
     render(<Button>{buttonText}</Button>);
     const button = screen.getByRole('button', { name: buttonText });
-    expect(button.className).toContain('bg-blue-60');
+    expect(button.className).toContain('bg-blue-80');
+    expect(button.className).toContain('text-white');
   });
 
   it('should apply secondary variant styles', () => {
     render(<Button variant="secondary">{buttonText}</Button>);
     const button = screen.getByRole('button', { name: buttonText });
-    expect(button.className).toContain('bg-gray-60');
+    expect(button.className).toContain('bg-gray-600');
   });
 
   it('should apply danger variant styles', () => {

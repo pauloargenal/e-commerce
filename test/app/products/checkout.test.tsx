@@ -55,11 +55,7 @@ describe('Checkout', () => {
   it('should render without crashing', () => {
     // Checkout component currently returns null
     const { container } = renderWithProvider(
-      <Checkout
-        checkoutLocale={mockCheckoutLocale}
-        productCardLocale={mockProductCardLocale}
-        receiptLocale={mockReceiptLocale}
-      />
+      <Checkout checkoutLocale={mockCheckoutLocale} receiptLocale={mockReceiptLocale} />
     );
 
     // Component returns null, so container should be empty

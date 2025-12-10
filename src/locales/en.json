@@ -45,7 +45,9 @@
     "continueShopping": "Continue Shopping",
     "subtotal": "Subtotal:",
     "discount": "Discount:",
-    "total": "Total:"
+    "total": "Total:",
+    "success": "Your order has been placed successfully",
+    "promoCode.applied": "Promo code \"{code}\" applied!"
   },
   "productCard": {
     "addToCart": "Add to Cart",

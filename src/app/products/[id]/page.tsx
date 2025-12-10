@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
-import { productService } from '../../../api/product-service';
 import { getLocale } from '../../../utils/get-locales';
+import GetProductServiceInstance from '../../../api/get-product-service';
 
 import { ProductDetail } from './product-detail';
 
@@ -11,15 +11,15 @@ interface ProductDetailPageProps {
 }
 
 export async function generateMetadata({ params }: ProductDetailPageProps) {
-  const product = await productService.fetchProductById(parseInt(params.id, 10));
+  const product = await GetProductServiceInstance.getProduct(parseInt(params.id, 10));
 
   if (!product) {
     return { title: 'Product Not Found' };
   }
-
+  const data = await product.json();
   return {
-    title: `${product.title} | E-Commerce Store`,
-    description: product.description
+    title: `${data.title} | E-Commerce Store`,
+    description: data.description
   };
 }
 
@@ -31,7 +31,15 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   }
 
   const [product, locales] = await Promise.all([
-    productService.fetchProductById(productId),
+    GetProductServiceInstance.getProduct(productId).then(async (response) => {
+      if (!response.ok) {
+        if (response.status === 404) {
+          return null;
+        }
+        throw new Error(`Failed to fetch product: ${response.statusText}`);
+      }
+      return response.json();
+    }),
     getLocale()
   ]);
 
