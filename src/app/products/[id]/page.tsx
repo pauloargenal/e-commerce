@@ -7,11 +7,12 @@ import GetProductServiceInstance from '../../../api/get-product-service';
 import { ProductDetail } from './product-detail';
 
 interface ProductDetailPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: ProductDetailPageProps) {
-  const product = await GetProductServiceInstance.getProduct(parseInt(params.id, 10));
+  const resolvedParams = await params;
+  const product = await GetProductServiceInstance.getProduct(parseInt(resolvedParams.id, 10));
 
   if (!product) {
     return { title: 'Product Not Found' };
@@ -24,7 +25,8 @@ export async function generateMetadata({ params }: ProductDetailPageProps) {
 }
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const productId = parseInt(params.id, 10);
+  const resolvedParams = await params;
+  const productId = parseInt(resolvedParams.id, 10);
 
   if (isNaN(productId)) {
     notFound();

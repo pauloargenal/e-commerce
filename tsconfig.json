@@ -1,39 +1,39 @@
 {
-    "compilerOptions": {
-      // Shared
-      "target": "ESNext",
-      "lib": [
-        "DOM",
-        "DOM.Iterable",
-        "ESNext"
-      ],
-      "module": "ESNext",
-      "skipLibCheck": true,
-      "isolatedModules": true,
-      // Next.js
-      "strict": true,
-      "noEmit": true,
-      "esModuleInterop": true,
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "jsx": "preserve",
-      "incremental": true,
-      "plugins": [
-        {
-          "name": "next"
-        }
-      ],
-      "allowJs": true,
-      "forceConsistentCasingInFileNames": true
-    },
-    "include": [
-      "next-env.d.ts",
-      "**/*.ts",
-      "**/*.tsx",
-      ".next/types/**/*.ts"
+  "compilerOptions": {
+    // Shared
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
     ],
-    "exclude": [
-      "node_modules"
-    ]
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    // Next.js
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
-  

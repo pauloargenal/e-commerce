@@ -56,10 +56,12 @@ async function getProducts(searchParams: SearchParams): Promise<Product[]> {
 }
 
 interface ProductPageProps {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }
 
 export default async function ProductPage({ searchParams }: ProductPageProps) {
+  const resolvedSearchParams = await searchParams;
+
   const [locales, categories, products] = await Promise.all([
     getLocale(),
     GetCategoryServiceInstance.getCategories().then(async (response) => {
@@ -68,13 +70,13 @@ export default async function ProductPage({ searchParams }: ProductPageProps) {
       }
       return response.json();
     }),
-    getProducts(searchParams)
+    getProducts(resolvedSearchParams)
   ]);
 
   const sortedProducts = sortProducts(
     products,
-    searchParams.sortBy || 'title',
-    searchParams.sortOrder || 'asc'
+    resolvedSearchParams.sortBy || 'title',
+    resolvedSearchParams.sortOrder || 'asc'
   );
 
   const productsLocale = locales.products;
@@ -87,10 +89,10 @@ export default async function ProductPage({ searchParams }: ProductPageProps) {
         productsLocale={productsLocale}
         productCardLocale={productCardLocale}
         currentFilters={{
-          search: searchParams.search || '',
-          category: searchParams.category || 'all',
-          sortBy: searchParams.sortBy || 'title',
-          sortOrder: searchParams.sortOrder || 'asc'
+          search: resolvedSearchParams.search || '',
+          category: resolvedSearchParams.category || 'all',
+          sortBy: resolvedSearchParams.sortBy || 'title',
+          sortOrder: resolvedSearchParams.sortOrder || 'asc'
         }}
       />
     </Suspense>

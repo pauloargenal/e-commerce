@@ -6,7 +6,7 @@ import { Search, Loader2 } from 'lucide-react';
 
 import { Product, ProductFilters, SortOption, SortOrder } from '../../../types/product';
 import { Button } from '../../../components/button';
-import { CategoryResponse } from '../../../api/product-service';
+import { CategoryResponse } from '../../../api/get-product-category-service';
 
 import { ProductCard } from './product-card';
 import ProductFilter from './product-filter';

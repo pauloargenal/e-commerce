@@ -123,13 +123,16 @@ Products are fetched on the server in `page.tsx`:
 
 ```typescript
 export default async function ProductPage({ searchParams }: ProductPageProps) {
-  const [locales, categories, products] = await Promise.all([
+ const [locales, categories, products] = await Promise.all([
     getLocale(),
-    productService.fetchCategories(),
+    GetCategoryServiceInstance.getCategories().then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to fetch categories: ${response.statusText}`);
+      }
+      return response.json();
+    }),
     getProducts(searchParams)
   ]);
-  // ...
-}
 ```
 
 ### URL-Based Filtering
@@ -144,7 +147,3 @@ The app uses URL search parameters for filtering:
 
 - `/products` - Main product listing page
 - `/products/{id}` - Individual product detail page
-
-## License
-
-MIT
