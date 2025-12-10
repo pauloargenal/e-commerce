@@ -9,21 +9,15 @@ describe('GetCategoryService', () => {
 
   describe('getCategories', () => {
     it('should fetch all categories successfully', async () => {
-      const response = await GetCategoryServiceInstance.getCategories();
+      const categories = await GetCategoryServiceInstance.getCategories();
 
-      expect(response).toBeDefined();
-      expect(response.ok).toBe(true);
-      expect(response.status).toBe(200);
-
-      const data = await response.json();
-      expect(data).toBeDefined();
-      expect(Array.isArray(data)).toBe(true);
-      expect(data.length).toBeGreaterThan(0);
+      expect(categories).toBeDefined();
+      expect(Array.isArray(categories)).toBe(true);
+      expect(categories.length).toBeGreaterThan(0);
     });
 
     it('should return categories as an array of objects with required fields', async () => {
-      const response = await GetCategoryServiceInstance.getCategories();
-      const categories = await response.json();
+      const categories = await GetCategoryServiceInstance.getCategories();
 
       expect(Array.isArray(categories)).toBe(true);
       expect(categories.length).toBeGreaterThan(0);
@@ -36,26 +30,16 @@ describe('GetCategoryService', () => {
       });
     });
 
-    it('should have correct content-type header', async () => {
-      const response = await GetCategoryServiceInstance.getCategories();
-
-      expect(response.headers.get('content-type')).toContain('application/json');
-    });
-
     it('should return consistent data on multiple calls', async () => {
-      const response1 = await GetCategoryServiceInstance.getCategories();
-      const response2 = await GetCategoryServiceInstance.getCategories();
+      const categories1 = await GetCategoryServiceInstance.getCategories();
+      const categories2 = await GetCategoryServiceInstance.getCategories();
 
-      const data1 = await response1.json();
-      const data2 = await response2.json();
-
-      expect(data1.length).toBe(data2.length);
-      expect(data1[0].slug).toBe(data2[0].slug);
+      expect(categories1.length).toBe(categories2.length);
+      expect(categories1[0].slug).toBe(categories2[0].slug);
     });
 
     it('should return categories with valid slugs', async () => {
-      const response = await GetCategoryServiceInstance.getCategories();
-      const categories = await response.json();
+      const categories = await GetCategoryServiceInstance.getCategories();
 
       categories.forEach((category: any) => {
         // Slugs should not be empty
@@ -66,8 +50,7 @@ describe('GetCategoryService', () => {
     });
 
     it('should return categories with valid names', async () => {
-      const response = await GetCategoryServiceInstance.getCategories();
-      const categories = await response.json();
+      const categories = await GetCategoryServiceInstance.getCategories();
 
       categories.forEach((category: any) => {
         // Names should not be empty

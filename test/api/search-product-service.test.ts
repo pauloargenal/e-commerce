@@ -10,21 +10,16 @@ describe('SearchProductService', () => {
   describe('searchProducts', () => {
     it('should search products successfully', async () => {
       const query = 'phone';
-      const response = await SearchProductServiceInstance.searchProducts(query);
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
-      expect(response).toBeDefined();
-      expect(response.ok).toBe(true);
-      expect(response.status).toBe(200);
-
-      const data = await response.json();
+      expect(data).toBeDefined();
       expect(data.products).toBeDefined();
       expect(Array.isArray(data.products)).toBe(true);
     });
 
     it('should return products matching search query', async () => {
       const query = 'laptop';
-      const response = await SearchProductServiceInstance.searchProducts(query);
-      const data = await response.json();
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
       expect(data.products.length).toBeGreaterThan(0);
 
@@ -40,27 +35,22 @@ describe('SearchProductService', () => {
 
     it('should handle URL encoding for special characters', async () => {
       const query = 'phone & tablet';
-      const response = await SearchProductServiceInstance.searchProducts(query);
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
-      expect(response.ok).toBe(true);
-      const data = await response.json();
       expect(data.products).toBeDefined();
     });
 
     it('should return empty results for non-matching query', async () => {
       const query = 'xyzabc123nonexistent';
-      const response = await SearchProductServiceInstance.searchProducts(query);
-      const data = await response.json();
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
-      expect(response.ok).toBe(true);
       expect(data.products).toBeDefined();
       expect(data.products.length).toBe(0);
     });
 
     it('should return products with required fields', async () => {
       const query = 'phone';
-      const response = await SearchProductServiceInstance.searchProducts(query);
-      const data = await response.json();
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
       if (data.products.length > 0) {
         const product = data.products[0];
@@ -76,49 +66,34 @@ describe('SearchProductService', () => {
 
     it('should return metadata with search results', async () => {
       const query = 'phone';
-      const response = await SearchProductServiceInstance.searchProducts(query);
-      const data = await response.json();
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
       expect(data).toHaveProperty('products');
       expect(data).toHaveProperty('total');
       expect(typeof data.total).toBe('number');
     });
 
-    it('should have correct content-type header', async () => {
-      const query = 'phone';
-      const response = await SearchProductServiceInstance.searchProducts(query);
-
-      expect(response.headers.get('content-type')).toContain('application/json');
-    });
-
     it('should handle case-insensitive search', async () => {
       const query1 = 'phone';
       const query2 = 'PHONE';
 
-      const response1 = await SearchProductServiceInstance.searchProducts(query1);
-      const response2 = await SearchProductServiceInstance.searchProducts(query2);
-
-      const data1 = await response1.json();
-      const data2 = await response2.json();
+      const data1 = await SearchProductServiceInstance.searchProducts(query1);
+      const data2 = await SearchProductServiceInstance.searchProducts(query2);
 
       expect(data1.products.length).toBe(data2.products.length);
     });
 
     it('should handle empty search query', async () => {
       const query = '';
-      const response = await SearchProductServiceInstance.searchProducts(query);
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
-      expect(response.ok).toBe(true);
-      const data = await response.json();
       expect(data.products).toBeDefined();
     });
 
     it('should handle single character search', async () => {
       const query = 'a';
-      const response = await SearchProductServiceInstance.searchProducts(query);
+      const data = await SearchProductServiceInstance.searchProducts(query);
 
-      expect(response.ok).toBe(true);
-      const data = await response.json();
       expect(data.products).toBeDefined();
     });
 
@@ -126,10 +101,8 @@ describe('SearchProductService', () => {
       const queries = ['phone', 'laptop', 'perfume'];
 
       for (const query of queries) {
-        const response = await SearchProductServiceInstance.searchProducts(query);
-        const data = await response.json();
+        const data = await SearchProductServiceInstance.searchProducts(query);
 
-        expect(response.ok).toBe(true);
         if (data.products.length > 0) {
           // Verify that results are relevant to the query
           const hasRelevantResults = data.products.some((product: any) => {
