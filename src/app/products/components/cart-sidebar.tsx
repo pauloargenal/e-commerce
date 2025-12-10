@@ -14,6 +14,7 @@ import { Button } from '../../../components/button';
 
 import CartFooter from './cart-footer';
 import CartContent from './cart-content';
+import { formatPrice } from '../utils/format-price';
 
 interface CartSidebarProps {
   cartLocale: Record<string, string>;
@@ -32,7 +33,7 @@ export function CartSidebar({ cartLocale, isOpen }: CartSidebarProps) {
     return sum + discountedPrice * item.quantity;
   }, 0);
 
-  const subtotalText = `$${subtotal.toFixed(2)}`;
+  const subtotalText = formatPrice(subtotal);
 
   const totalItems = cartItems.reduce((sum, item) => {
     return sum + item.quantity;

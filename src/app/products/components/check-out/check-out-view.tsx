@@ -7,6 +7,7 @@ import { CartItem } from '../../../../types/product';
 
 import { AppliedPromoCard } from './apply-promo-card';
 import { ApplyPromoInput } from './apply-promo-input';
+import { formatPrice } from '../../utils/format-price';
 
 interface CheckOutViewProps {
   items: CartItem[];
@@ -42,9 +43,9 @@ export function CheckOutView({
   checkoutLocale
 }: CheckOutViewProps) {
   const orderSummaryTitle = checkoutLocale.orderSummary;
-  const subtotalText = `$${subtotal.toFixed(2)}`;
-  const totalText = `$${total.toFixed(2)}`;
-  const discountAmountText = `-$${discountAmount.toFixed(2)}`;
+  const subtotalText = formatPrice(subtotal);
+  const totalText = formatPrice(total);
+  const discountAmountText = `-${formatPrice(discountAmount)}`;
 
   const discountText = useMemo(() => {
     return checkoutLocale['summary.discount'].replace(

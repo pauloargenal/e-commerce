@@ -8,6 +8,7 @@ import { Product } from '../../../types/product';
 import { useAppDispatch } from '../../../store/hooks';
 import { addToCart } from '../../../store/slices/cart-slice';
 import { Button } from '../../../components';
+import { formatPrice } from '../utils/format-price';
 
 interface ProductCardProps {
   product: Product;
@@ -29,8 +30,8 @@ export function ProductCard({ product, index = 0, productCardLocale }: ProductCa
   const stockText = `Only ${product.stock} left`;
   const addToCartText = addedToCart ? productCardLocale.added : productCardLocale.addToCart;
   const likeText = isLiked ? 'Liked!' : 'Like';
-  const priceText = `$${discountedPrice.toFixed(2)}`;
-  const priceTextWithDiscount = `$${product.price.toFixed(2)}`;
+  const priceText = formatPrice(discountedPrice);
+  const priceTextWithDiscount = formatPrice(product.price);
   const viewDetailsText = productCardLocale.view;
 
   const handleAddToCart = (event: React.MouseEvent) => {

@@ -23,6 +23,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { addToCart } from '../../../store/slices/cart-slice';
 import { Button } from '../../../components/button';
 import Snackbar from '../../../components/snack-bar';
+import { formatPrice } from '../utils/format-price';
 
 interface ProductDetailProps {
   product: Product;
@@ -44,11 +45,11 @@ export function ProductDetail({ product, locales }: ProductDetailProps) {
   const hasDiscount = product.discountPercentage > 0;
   const savings = product.price - discountedPrice;
 
-  const discountedPriceText = `$${discountedPrice.toFixed(2)}`;
+  const discountedPriceText = formatPrice(discountedPrice);
   const productReviewsText = `${product.reviews?.length || 0} reviews`;
   const discountBadgeText = `${Math.round(product.discountPercentage)}%`;
-  const regularPriceText = `$${product.price.toFixed(2)}`;
-  const savingsText = `Save ${savings.toFixed(2)}`;
+  const regularPriceText = formatPrice(product.price);
+  const savingsText = `Save ${formatPrice(savings)}`;
 
   const handleAddToCart = () => {
     if (
