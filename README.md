@@ -97,7 +97,8 @@ npm run dev
 src/
 ├── api/
 │   ├── mock-data.ts        # Mock promo codes
-│   └── product-service.ts  # API service for DummyJSON
+│   └── get-product-service.ts  # API service for DummyJSON
+│   └── ...
 ├── app/
 │   ├── layout.tsx          # Root layout
 │   └── products/
