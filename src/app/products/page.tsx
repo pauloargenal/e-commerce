@@ -21,38 +21,18 @@ interface SearchParams {
 async function getProducts(searchParams: SearchParams): Promise<Product[]> {
   const { search, category } = searchParams;
 
-  let products: Product[] = [];
-
   if (search && search.trim()) {
-    const response = await SearchProductServiceInstance.searchProducts(search);
-    const data = await response.json();
-    if (!data.products) {
-      throw new Error(`No products found for search: ${search}`);
-    }
-    products = data.products;
-  } else if (category && category !== 'all') {
-    const response = await GetProductCategoryServiceInstance.getProductCategories(category);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch products by category: ${response.statusText}`);
-    }
-    const data = await response.json();
-    if (!data.products) {
-      throw new Error(`No products found for category: ${category}`);
-    }
-    products = data.products;
-  } else {
-    const response = await GetProductServiceInstance.getProducts(100);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch products: ${response.statusText}`);
-    }
-    const data = await response.json();
-    if (!data.products) {
-      throw new Error(`No products found`);
-    }
-    products = data.products;
+    const data = await SearchProductServiceInstance.searchProducts(search);
+    return data.products || [];
   }
 
-  return products;
+  if (category && category !== 'all') {
+    const data = await GetProductCategoryServiceInstance.getProductCategories(category);
+    return data.products || [];
+  }
+
+  const data = await GetProductServiceInstance.getProducts(100);
+  return data.products || [];
 }
 
 interface ProductPageProps {
@@ -64,12 +44,7 @@ export default async function ProductPage({ searchParams }: ProductPageProps) {
 
   const [locales, categories, products] = await Promise.all([
     getLocale(),
-    GetCategoryServiceInstance.getCategories().then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`Failed to fetch categories: ${response.statusText}`);
-      }
-      return response.json();
-    }),
+    GetCategoryServiceInstance.getCategories(),
     getProducts(resolvedSearchParams)
   ]);
 

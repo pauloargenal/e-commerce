@@ -12,16 +12,15 @@ interface ProductDetailPageProps {
 
 export async function generateMetadata({ params }: ProductDetailPageProps) {
   const resolvedParams = await params;
-  const product = await GetProductServiceInstance.getProduct(parseInt(resolvedParams.id, 10));
-
-  if (!product) {
+  try {
+    const product = await GetProductServiceInstance.getProduct(parseInt(resolvedParams.id, 10));
+    return {
+      title: `${product.title} | E-Commerce Store`,
+      description: product.description
+    };
+  } catch (error) {
     return { title: 'Product Not Found' };
   }
-  const data = await product.json();
-  return {
-    title: `${data.title} | E-Commerce Store`,
-    description: data.description
-  };
 }
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
@@ -33,14 +32,11 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   }
 
   const [product, locales] = await Promise.all([
-    GetProductServiceInstance.getProduct(productId).then(async (response) => {
-      if (!response.ok) {
-        if (response.status === 404) {
-          return null;
-        }
-        throw new Error(`Failed to fetch product: ${response.statusText}`);
+    GetProductServiceInstance.getProduct(productId).catch((error) => {
+      if (error.message.includes('not found')) {
+        return null;
       }
-      return response.json();
+      throw error;
     }),
     getLocale()
   ]);

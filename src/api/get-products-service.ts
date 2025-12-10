@@ -1,12 +1,10 @@
-export interface GetProductsResponseInterface {
-  name: string;
-}
+import { ProductsResponse } from '../types/product';
 
 class GetProductsService {
   private get getApiString(): string {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!apiBaseUrl) {
-      throw new Error('One or more API env vars are not defined');
+      throw new Error('NEXT_PUBLIC_API_BASE_URL is not defined');
     }
 
     return `${apiBaseUrl}/products`;
@@ -18,11 +16,18 @@ class GetProductsService {
     };
   }
 
-  async getProducts(limit = 100, skip = 0): Promise<Response> {
-    return fetch(`${this.getApiString}?limit=${limit}&skip=${skip}`, {
+  async getProducts(limit = 100, skip = 0): Promise<ProductsResponse> {
+    const response = await fetch(`${this.getApiString}?limit=${limit}&skip=${skip}`, {
       method: 'GET',
-      headers: this.headers
+      headers: this.headers,
+      next: { revalidate: 3600 }
     });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
   }
 }
 

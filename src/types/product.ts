@@ -47,6 +47,20 @@ export interface ProductsResponse {
   limit: number;
 }
 
+export interface ProductResponse {
+  product: Product;
+}
+
+export interface CategoriesResponse {
+  categories: CategoryInfo[];
+}
+
+export interface CategoryInfo {
+  slug: string;
+  name: string;
+  url: string;
+}
+
 export interface CartItem {
   product: Product;
   quantity: number;
