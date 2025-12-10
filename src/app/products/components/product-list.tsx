@@ -59,15 +59,14 @@ export function ProductList({
   const handleSearch = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
-      updateFilters({ search: searchValue, category: '' });
+      updateFilters({ search: searchValue });
     },
     [searchValue, updateFilters]
   );
 
   const handleCategoryChange = useCallback(
     (value: string) => {
-      updateFilters({ category: value, search: '' });
-      setSearchValue('');
+      updateFilters({ category: value });
     },
     [updateFilters]
   );
