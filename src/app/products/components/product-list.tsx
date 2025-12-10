@@ -7,6 +7,7 @@ import { Product, ProductFilters, SortOption, SortOrder } from '../../../types/p
 import { Button } from '../../../components/button';
 import { CategoryResponse } from '../../../api/get-product-category-service';
 import { sortProducts } from '../utils/sort-products';
+import SearchProductServiceInstance from '../../../api/search-product-service';
 
 import { ProductCard } from './product-card';
 import ProductFilter from './product-filter';
@@ -41,6 +42,14 @@ export function ProductList({
     (event: React.FormEvent) => {
       event.preventDefault();
       setCurrentFilters((prev) => ({ ...prev, search: searchValue }));
+
+      // not using the return value because it prevents the use of filtering by categories
+      // and searching for a product at the same time.
+      if (searchValue.trim()) {
+        SearchProductServiceInstance.searchProducts(searchValue).catch((error) => {
+          console.warn('Background search API call failed:', error);
+        });
+      }
     },
     [searchValue]
   );

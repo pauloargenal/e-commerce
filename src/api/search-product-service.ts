@@ -19,8 +19,7 @@ class SearchProductService {
   async searchProducts(query: string): Promise<ProductsResponse> {
     const response = await fetch(`${this.getApiString}?q=${encodeURIComponent(query)}`, {
       method: 'GET',
-      headers: this.headers,
-      next: { revalidate: 60 }
+      headers: this.headers
     });
 
     if (!response.ok) {
